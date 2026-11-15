@@ -1,0 +1,9 @@
+pandas
+openpyxl
+SQLAlchemy>=2
+psycopg[binary]>=3
+scipy
+numpy
+matplotlib
+python-dotenv
+pytest
