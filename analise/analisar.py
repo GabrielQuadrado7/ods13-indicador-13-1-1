@@ -8,6 +8,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
+from sqlalchemy.exc import OperationalError  # noqa: E402
+
 from ods13.db import ErroConfiguracao, criar_engine, url_do_ambiente  # noqa: E402
 from ods13.relatorio import gerar_saidas  # noqa: E402
 
@@ -18,6 +20,9 @@ def main() -> int:
         gerar_saidas(criar_engine(url_do_ambiente()), saida)
     except ErroConfiguracao as erro:
         print(f"Erro: {erro}")
+        return 1
+    except OperationalError:
+        print("Não foi possível conectar ao PostgreSQL: verifique se o serviço está rodando e a senha no arquivo .env.")
         return 1
     print(f"Saídas geradas em {saida}:")
     print("  - tabelas/ (CSV para Excel)\n  - graficos/ (PNG 300 dpi)\n  - resumo.md")
