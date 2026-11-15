@@ -16,3 +16,13 @@ def engine():
     preparar_banco(eng)
     yield eng
     eng.dispose()
+
+
+@pytest.fixture
+def engine_carregado(engine):
+    from pathlib import Path
+
+    from ods13.etl import carregar, ler_planilha
+
+    carregar(engine, ler_planilha(Path("dados/13-1-1.xlsx")))
+    return engine
