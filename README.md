@@ -1,13 +1,10 @@
 # ODS 13 — Indicador 13.1.1
 
-Base de dados e análise estatística do indicador **13.1.1 — número de mortes, pessoas desaparecidas e
-pessoas diretamente afetadas atribuído a desastres por 100 mil habitantes** (Brasil, Grandes Regiões e
-UFs, 2018–2024). Projeto de extensão FATEC, 4º semestre.
+Base de dados e análise estatística do indicador **13.1.1 — número de mortes, pessoas desaparecidas e pessoas diretamente afetadas atribuído a desastres por 100 mil habitantes** (Brasil, Grandes Regiões e UFs, 2018–2024). Projeto de extensão FATEC, 4º semestre.
 
 Fonte dos dados: MI/SEDEC – S2ID; IBGE – estimativas populacionais (`dados/13-1-1.xlsx`).
 
-📘 **Documentação completa** (modelo de dados, consultas ao banco, pgAdmin, problemas comuns):
-[DOCUMENTACAO.md](DOCUMENTACAO.md)
+📘 **Documentação completa** (modelo de dados, consultas ao banco, pgAdmin, problemas comuns): [DOCUMENTACAO.md](DOCUMENTACAO.md)
 
 📄 **Artigo:** [Artigo_ODS13_Indicador_13-1-1.docx](Artigo_ODS13_Indicador_13-1-1.docx)
 
@@ -53,8 +50,7 @@ As tabelas CSV usam `;` e vírgula decimal e abrem direto no Excel em português
 ## Observações
 
 - O template do artigo cita MySQL; este projeto usa **PostgreSQL**. Na Metodologia, cite PostgreSQL.
-- Variância e desvio padrão são **amostrais**. Os valores `...` da planilha (Tocantins 2019, Paraíba
-  2018, Sergipe 2018, Distrito Federal 2018) ficam como ausentes, nunca como zero.
+- Variância e desvio padrão são **amostrais**. Os valores `...` da planilha (Tocantins 2019, Paraíba 2018, Sergipe 2018, Distrito Federal 2018) ficam como ausentes, nunca como zero.
 - A estatística "entre UFs" usa só as 27 UFs; Brasil e regiões são analisados como séries próprias.
 - As regressões do Brasil e das regiões têm n = 7: tendência fraca e pouco robusta.
 - Toda saída é regenerada pelos dois comandos acima; não edite os números à mão no artigo.

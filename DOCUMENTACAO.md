@@ -2,21 +2,34 @@
 
 Guia para o grupo instalar, rodar, consultar o banco e regenerar os resultados e o artigo.
 
-**Indicador:** 13.1.1 — número de mortes, pessoas desaparecidas e pessoas diretamente afetadas atribuído a
-desastres por 100 mil habitantes. **Cobertura:** Brasil, 5 Grandes Regiões e 27 UFs, de 2018 a 2024.
-**Fonte:** MI/SEDEC – S2ID; IBGE – estimativas populacionais.
+- **Indicador:** 13.1.1 — número de mortes, pessoas desaparecidas e pessoas diretamente afetadas atribuído a desastres por 100 mil habitantes.
+- **Cobertura:** Brasil, 5 Grandes Regiões e 27 UFs, de 2018 a 2024.
+- **Fonte:** MI/SEDEC – S2ID; IBGE – estimativas populacionais.
 
 ---
 
 ## 1. Como o projeto funciona
 
-```
-dados/13-1-1.xlsx ──► etl/carregar.py ──► PostgreSQL (schema ods13) ──► analise/analisar.py ──► saida/
-                      lê, limpa, valida     3 tabelas + 3 views          estatística,          tabelas/*.csv
-                      e grava                                            regressão, gráficos   graficos/*.png
-                                                                                               resumo.md
-                                                                              │
-                                                    artigo/montar_artigo.py ◄─┘──► Artigo_ODS13_Indicador_13-1-1.docx
+```text
+dados/13-1-1.xlsx              planilha original
+        │
+        ▼
+etl/carregar.py                lê, limpa, valida e grava
+        │
+        ▼
+PostgreSQL (schema ods13)      3 tabelas + 3 views
+        │
+        ▼
+analise/analisar.py            estatística, regressão, gráficos
+        │
+        ▼
+saida/                         tabelas/*.csv, graficos/*.png, resumo.md
+        │
+        ▼
+artigo/montar_artigo.py        preenche o template do Word
+        │
+        ▼
+Artigo_ODS13_Indicador_13-1-1.docx
 ```
 
 - A **planilha** é a única fonte dos dados. O banco é sempre recriado a partir dela.
@@ -48,8 +61,7 @@ dados/13-1-1.xlsx ──► etl/carregar.py ──► PostgreSQL (schema ods13) 
 
 ## 2. Instalação (uma vez por computador)
 
-Pré-requisitos: **Python 3.13** e **PostgreSQL 18**. O `psql` fica em
-`C:\Program Files\PostgreSQL\18\bin\psql.exe` e não está no PATH.
+Pré-requisitos: **Python 3.13** e **PostgreSQL 18**. O `psql` fica em `C:\Program Files\PostgreSQL\18\bin\psql.exe` e não está no PATH.
 
 ```powershell
 # 1. Ambiente Python do projeto
@@ -74,9 +86,7 @@ O `.env` fica fora do git. Cada pessoa do grupo cria o seu com a própria senha.
 
 ### VS Code
 
-O projeto já traz `.vscode/settings.json` apontando para `.venv`. Se o botão ▷ der
-`ModuleNotFoundError: No module named 'sqlalchemy'`, o VS Code está usando outro Python:
-`Ctrl+Shift+P` → **Python: Select Interpreter** → `.\.venv\Scripts\python.exe` e abra um terminal novo.
+O projeto já traz `.vscode/settings.json` apontando para `.venv`. Se o botão ▷ der `ModuleNotFoundError: No module named 'sqlalchemy'`, o VS Code está usando outro Python: `Ctrl+Shift+P` → **Python: Select Interpreter** → `.\.venv\Scripts\python.exe` e abra um terminal novo.
 
 ---
 
@@ -120,8 +130,7 @@ Os CSVs usam `;` e vírgula decimal e abrem direto no Excel em português.
 .venv\Scripts\python -m pytest
 ```
 
-Devem passar 40 testes. Eles usam o banco `ods13_teste` e conferem os números contra valores calculados à mão
-(por exemplo, média do Brasil = 526,67 e inclinação da reta = 58,20).
+Devem passar 40 testes. Eles usam o banco `ods13_teste` e conferem os números contra valores calculados à mão (por exemplo, média do Brasil = 526,67 e inclinação da reta = 58,20).
 
 ---
 
@@ -280,19 +289,14 @@ Rode com `.venv\Scripts\python` a partir da pasta `ODS13`.
 
 ### Atualizar os dados (nova planilha)
 
-1. Substitua `dados/13-1-1.xlsx` pela nova versão, com o mesmo formato: título, cabeçalho com os anos, uma
-   linha por localidade e a linha de fonte no fim.
-2. Se mudarem os anos ou a quantidade de células `...`, ajuste `ANOS` e `nulos_esperados` em `ods13/etl.py`.
-   Senão a carga para com uma mensagem explicando a diferença.
+1. Substitua `dados/13-1-1.xlsx` pela nova versão, com o mesmo formato: título, cabeçalho com os anos, uma linha por localidade e a linha de fonte no fim.
+2. Se mudarem os anos ou a quantidade de células `...`, ajuste `ANOS` e `nulos_esperados` em `ods13/etl.py`. Senão a carga para com uma mensagem explicando a diferença.
 3. Rode os três comandos da seção 3.
-4. Revise os textos do artigo em `artigo/montar_artigo.py`: os trechos que citam números fixos precisam
-   ser conferidos com o novo `saida/resumo.md`.
+4. Revise os textos do artigo em `artigo/montar_artigo.py`: os trechos que citam números fixos precisam ser conferidos com o novo `saida/resumo.md`.
 
 ### Gerar o artigo de novo
 
-Feche o `.docx` no Word e rode `.venv\Scripts\python artigo\montar_artigo.py`. O script parte sempre do
-template original (`Template_Artigo_Cientifico_Projeto_ODS (1).docx`). **Edições feitas à mão no artigo gerado
-se perdem.** Por isso, ou edite o texto no script, ou só edite o `.docx` à mão quando não for gerá-lo de novo.
+Feche o `.docx` no Word e rode `.venv\Scripts\python artigo\montar_artigo.py`. O script parte sempre do template original (`Template_Artigo_Cientifico_Projeto_ODS (1).docx`). **Edições feitas à mão no artigo gerado se perdem.** Por isso, ou edite o texto no script, ou só edite o `.docx` à mão quando não for gerá-lo de novo.
 
 ### Conferir um número do artigo
 
@@ -318,11 +322,7 @@ Todo número vem de `saida/resumo.md` ou dos CSVs. Para conferir no banco, use a
 
 ## 8. Decisões do projeto
 
-- **PostgreSQL em vez de MySQL:** o template cita MySQL, mas o grupo escolheu PostgreSQL, que calcula mediana
-  e regressão direto no SQL. Na Metodologia do artigo isso já está explicado.
-- **Moda:** os valores quase não se repetem, então o artigo usa a **classe modal** (regra de Sturges) e
-  informa também a moda bruta (0,0, com 5 ocorrências).
-- **Regressão:** Y = valor do indicador, X = ano. Ajustada para o Brasil, cada região e todas as UFs juntas.
-  As séries têm só 7 anos, então as tendências são pouco robustas. A regressão com as UFs juntas trata anos da
-  mesma UF como independentes e serve só como análise complementar.
+- **PostgreSQL em vez de MySQL:** o template cita MySQL, mas o grupo escolheu PostgreSQL, que calcula mediana e regressão direto no SQL. Na Metodologia do artigo isso já está explicado.
+- **Moda:** os valores quase não se repetem, então o artigo usa a **classe modal** (regra de Sturges) e informa também a moda bruta (0,0, com 5 ocorrências).
+- **Regressão:** Y = valor do indicador, X = ano. Ajustada para o Brasil, cada região e todas as UFs juntas. As séries têm só 7 anos, então as tendências são pouco robustas. A regressão com as UFs juntas trata anos da mesma UF como independentes e serve só como análise complementar.
 - Design completo: `docs/superpowers/specs/2026-11-15-ods13-indicador-13-1-1-design.md`.
