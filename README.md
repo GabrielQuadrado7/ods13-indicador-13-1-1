@@ -6,6 +6,11 @@ UFs, 2018–2024). Projeto de extensão FATEC, 4º semestre.
 
 Fonte dos dados: MI/SEDEC – S2ID; IBGE – estimativas populacionais (`dados/13-1-1.xlsx`).
 
+📘 **Documentação completa** (modelo de dados, consultas ao banco, pgAdmin, problemas comuns):
+[DOCUMENTACAO.md](DOCUMENTACAO.md)
+
+📄 **Artigo:** [Artigo_ODS13_Indicador_13-1-1.docx](Artigo_ODS13_Indicador_13-1-1.docx)
+
 ## Pré-requisitos
 
 - Python 3.13
@@ -28,6 +33,7 @@ copy config.example.env .env   # depois troque SUA_SENHA pela senha do usuário 
 ```powershell
 .venv\Scripts\python etl\carregar.py      # recria o schema ods13 e carrega a planilha
 .venv\Scripts\python analise\analisar.py  # gera saida\ (tabelas, gráficos, resumo.md)
+.venv\Scripts\python artigo\montar_artigo.py  # gera o artigo .docx (feche-o no Word antes)
 .venv\Scripts\python -m pytest            # testes (usam o banco ods13_teste)
 ```
 
