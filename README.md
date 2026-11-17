@@ -15,6 +15,14 @@ Fonte dos dados: MI/SEDEC – S2ID; IBGE – estimativas populacionais (`dados/1
 
 ## Preparação (uma vez)
 
+Forma rápida: cria `.venv`, `.env` e os bancos, e com `-Carregar` já gera `saida/`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup.ps1 -Carregar
+```
+
+Forma manual:
+
 ```powershell
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt

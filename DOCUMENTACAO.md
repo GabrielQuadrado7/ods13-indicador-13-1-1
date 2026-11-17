@@ -61,7 +61,29 @@ Artigo_ODS13_Indicador_13-1-1.docx
 
 ## 2. Instalação (uma vez por computador)
 
-Pré-requisitos: **Python 3.13** e **PostgreSQL 18**. O `psql` fica em `C:\Program Files\PostgreSQL\18\bin\psql.exe` e não está no PATH.
+Pré-requisitos: **Python 3.13** (com "Add to PATH" marcado na instalação) e **PostgreSQL 18**. O `psql` fica em `C:\Program Files\PostgreSQL\18\bin\psql.exe` e não está no PATH.
+
+### Forma rápida: `setup.ps1`
+
+Depois de clonar o repositório, rode na pasta do projeto:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup.ps1 -Carregar
+```
+
+O script pede a senha do usuário `postgres` e faz tudo sozinho:
+
+| Passo | O que faz | Se já existir |
+|---|---|---|
+| 1 | Cria o `.venv` e instala o `requirements.txt` | Só atualiza as dependências |
+| 2 | Testa a conexão com o PostgreSQL | Para com mensagem clara se a senha estiver errada |
+| 3 | Cria o `.env` com a senha informada | Não mexe no `.env` existente |
+| 4 | Cria os bancos `ods13` e `ods13_teste` | Pula o banco |
+| 5 | Com `-Carregar`: roda a carga e a análise, gerando `saida/` | — |
+
+Pode ser rodado de novo sem problema. Sem `-Carregar`, ele só prepara o ambiente. Outras opções: `-Usuario`, `-Servidor` e `-Porta`, para um PostgreSQL diferente do padrão (`postgres@localhost:5432`).
+
+### Forma manual (o que o script faz por dentro)
 
 ```powershell
 # 1. Ambiente Python do projeto
